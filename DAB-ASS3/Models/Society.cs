@@ -15,8 +15,8 @@ namespace DAB_ASS3.Models
         public int society_member_count { get; set; }
 
 
-        chairman chairman { get; set; }
+        public chairman chairman { get; set; }
 
-        key_responsible keyresponsible { get; set; }
+        public key_responsible keyresponsible { get; set; }
     }
 }

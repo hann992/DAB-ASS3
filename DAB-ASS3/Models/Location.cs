@@ -13,9 +13,9 @@ namespace DAB_ASS3.Models
         public int location_zipcode { get; set; }
         public string location_name { get; set; }
 
-		location_access location_access { get; set; }
+		public List<location_access> location_access { get; set; }
 
-		List<string> location_properties { get; set; }
+		public List<string> location_properties { get; set; }
 
     }
 }

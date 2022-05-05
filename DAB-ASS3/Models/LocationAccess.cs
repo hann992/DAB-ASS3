@@ -14,8 +14,6 @@ namespace DAB_ASS3.Models
         public int location_access_code { get; set; }
         public string location_key_pickup_address { get; set; } = null;
 
-        public int locationId { get; set; }
-        location location { get; set; }
     }
 }
 

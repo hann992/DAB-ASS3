@@ -40,7 +40,7 @@ app.UseStaticFiles();
 app.MapControllers();
 
 // Seeding database                        <- SKAL OPDATERES
-//SeedData.SeedDatabase();
+SeedData.SeedDatabase();
 
 app.Run();
 

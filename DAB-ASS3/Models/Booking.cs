@@ -16,9 +16,11 @@ namespace DAB_ASS3.Models
 
         public DateTime booking_to { get; set; }
 
-        public int society_id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string society_id { get; set; }
 
-        public int room_id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string room_id { get; set; }
 
     }
 }

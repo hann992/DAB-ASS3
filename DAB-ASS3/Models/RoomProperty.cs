@@ -11,7 +11,7 @@ namespace DAB_ASS3.Models
         public string roomproperties_id { get; set; }
         public string room_property_name { get; set; }
 
-        List<string> room_ids { get; set; }
+        public List<string> room_ids { get; set; }
 
     }
 }

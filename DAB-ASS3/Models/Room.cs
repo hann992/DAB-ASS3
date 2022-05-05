@@ -9,13 +9,14 @@ namespace DAB_ASS3.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string room_id { get; set; }
+
         [BsonRepresentation(BsonType.ObjectId)]
         public string location_ID { get; set; }
 
         public string room_name { get; set; }
         public int room_capacity { get; set; }
 
-        List<string> room_properties { get; set; }
+        public List<string> room_properties { get; set; }
 
     }
 }
