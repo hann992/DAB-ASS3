@@ -1,0 +1,25 @@
+
+
+
+
+Society: Collection
+
+	Chairman, Key-responsible
+
+
+{
+	societyId: int,
+	society_CVR: int,
+	society_name: string,
+	society_activity: string,
+	society_member_count: int,
+	chairman: { 
+		chairman_name: string, 
+		chairman_CPR: int,
+		chairman_address }
+	key_responsible: { 
+		key_responsible_name: string, key_responsible_CPR: int,
+		key_responsible_address: string,
+		key_responsible_phone: int,
+		key_responsible_photo_id_number: int}
+}
