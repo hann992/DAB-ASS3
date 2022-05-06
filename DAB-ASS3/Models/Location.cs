@@ -15,7 +15,7 @@ namespace DAB_ASS3.Models
 
 		public List<location_access> location_access { get; set; }
 
-		public List<location_property> Location_Properties { get; set; }
+		public List<location_property> location_properties { get; set; }
 
     }
 }

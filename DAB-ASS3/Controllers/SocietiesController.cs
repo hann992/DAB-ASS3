@@ -51,10 +51,17 @@ namespace DAB_ASS3.Controllers
                 else return x.society_activity.CompareTo(y.society_activity);
             });
 
+            var endelige = (from s in societies
+                         select new
+                         {
+                             SocietyName = s.society_name,
+                             SocietyCvr = s.society_CVR,
+                             ChairmanName = s.chairman.chairman_name,
+                             ChairmanAddress = s.chairman.chairman_address,
+                             SocietyActivity = s.society_activity,
+                         }).ToList();
 
-
-
-            return JsonConvert.SerializeObject(societies);
+            return JsonConvert.SerializeObject(endelige);
         }
     }
 }

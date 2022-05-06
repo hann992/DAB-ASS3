@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using MongoContext.Services;
 
 namespace DAB_ASS3.Controllers
 {
@@ -35,8 +36,33 @@ namespace DAB_ASS3.Controllers
             //                 ZipCode = l.location_zipcode
             //             }).ToList();
 
+
+
+            MongoService db = new MongoService();
+
+            var locations = db.GetAllLocations();
+            var rooms = db.GetAllRooms();
+
+
+            var endelige = (from r in rooms.ToList()
+                            join l in locations.ToList()
+                            on r.location_ID equals l.location_id
+                            select new
+                            {
+                                RoomName = r.room_name,
+                                RoomCapacity = r.room_capacity,
+                                LocationName = l.location_name,
+                                Address = l.location_address,
+                                ZipCode = l.location_zipcode
+                            }).ToList();
+
+
+
+
+
+
             // Vi laver listen om til json, og returnere som string
-            return JsonConvert.SerializeObject("");
+            return JsonConvert.SerializeObject(endelige);
         }
     }
 }

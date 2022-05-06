@@ -124,6 +124,8 @@ public class SeedData
         // Oprettelse af MongoDB objekt
         MongoService db = new MongoService();
 
+        Console.WriteLine("Dropping all collections!");
+        db.DropAllCollections();
 
         Console.WriteLine("Making new Societies");
 
@@ -233,19 +235,7 @@ public class SeedData
             db.CreateSociety(society);
         }
 
-        //Console.WriteLine(db.GetSociety("Hoppeklubben").society_name);
-        //Console.WriteLine(db.GetSociety("Hoppeklubben").society_id);
 
-
-        // Laver alle lokations props
-        //Console.WriteLine("Making new Location Properties");
-        //foreach (var prop in lokationpropnavne.ToList())
-        //{
-        //    db.CreateLocationProperty(new location_property()
-        //    {
-        //        location_property_name = prop
-        //    }) ;
-        //}
 
         // Lav 10 locations:
         Console.WriteLine("Making new Locations");
@@ -264,7 +254,7 @@ public class SeedData
                         location_key_pickup_address = adresse
                     }
                 },
-                Location_Properties = new List<location_property>()
+                location_properties = new List<location_property>()
                 {
                     new location_property()
                     {
@@ -274,54 +264,50 @@ public class SeedData
             });
         }
 
-        // Laver alle rum props
-        //Console.WriteLine("Making new Room Properties");
-        //foreach (var prop in rumpropnavne.ToList())
-        //{
-        //    db.CreateRoomProperty(new room_property()
-        //    {
-        //        room_property_name = prop
-        //    });
-        //}
 
         // Giver lokationer rum og props, og rummene props
         Console.WriteLine("Making new Rooms at Locations and adding Properties");
         foreach (var location in db.GetAllLocations().ToList())
+        {
+            // Alle lokationer får mellem 2 - 6 rum
+            for (int i = 0; i < rnd.Next(2, 6); i++)
             {
-                // Alle lokationer får mellem 2 - 6 rum
-                for (int i = 0; i < rnd.Next(2, 6); i++)
+                db.CreateRoom(new room()
                 {
-                    db.CreateRoom(new room()
+                    room_name = rumnavn,
+                    room_capacity = rnd.Next(10, 100),
+                    location_ID = location.location_id,
+                    room_properties = new List<room_property>()
                     {
-                        room_name = rumnavn,
-                        room_capacity = rnd.Next(10, 100),
-                        location_ID = location.location_id,
-                        room_properties = new List<room_property>()
+                        new room_property()
                         {
-                            new room_property()
-                            {
-                                room_property_name = rumprop
-                            }
-                         }   
-                    });
+                            room_property_name = rumprop
+                        }
+                        }   
+                });
+            }
+        }
+
+            Console.WriteLine("Making Bookings");
+
+            foreach(var society in db.GetAllSocieties().ToList())
+            {
+                int noOfBookings = rnd.Next(1, 3);
+                for(int i = 0; i < noOfBookings; i++)
+                {
+                    db.CreateBooking(
+                        new booking()
+                        {
+                            booking_from = DateTime.Today.AddDays(-1),
+                            booking_to = DateTime.Today.AddDays(1),
+                            society_id = society.society_id,
+                            room_id = db.GetRandomRoom().room_id,
+                        });
                 }
-                Console.WriteLine("location: " + location.location_name + ": " + location.location_id.ToString());
-                //foreach(var room in db.GetRoomsFromLocation(location.location_id).ToList())
-                //{
-                //    Console.WriteLine("Room: " + room.room_name + ": " + room.location_ID.ToString());
-                //    //db.AddRoomPropertyToRoom(db.GetRoom(room.room_id), db.GetRoomProp(rumprop));
-
-
-                //    Console.WriteLine("RoomID");
-                //    Console.WriteLine(db.GetRoom(room.room_id).room_id);
-                //    Console.WriteLine("RoomPropID");
-                //    Console.WriteLine(db.GetRoomProp(rumprop).roomproperty_id);
-                //}
             }
 
 
-
-            Console.WriteLine("Done!");
+        Console.WriteLine("Done!");
 
     }
 }

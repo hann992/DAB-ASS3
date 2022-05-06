@@ -33,9 +33,20 @@ namespace MongoContext.Services
 
             _room =                 database.GetCollection<room>("room");
 
-            _room_properties =      database.GetCollection<room_property>("room_property");
+        }
 
-            _location_properties =  database.GetCollection<location_property>("location_property");
+
+        // DROP COLLECTIONS
+        public void DropAllCollections()
+        {
+            var client = new MongoClient(connectionString);
+            var database = client.GetDatabase(DBname);
+
+            database.DropCollection("booking");
+            database.DropCollection("society");
+            database.DropCollection("location");
+            database.DropCollection("room");
+
         }
 
         // CREATE COLLECTION OBJECTS
@@ -50,12 +61,8 @@ namespace MongoContext.Services
             _room.InsertOne(room);
         }
 
-        public void CreateBooking(booking booking, society society, room room)
+        public void CreateBooking(booking booking)
         {
-            booking.society_id = GetSociety(society.society_name).society_id;
-            booking.room_id = GetRoom(room.room_name).room_id;
-
-
             _booking.InsertOne(booking);
         }
 
@@ -63,45 +70,6 @@ namespace MongoContext.Services
         {
             _location.InsertOne(location);
         }
-
-        //public void CreateRoomProperty(room_property room_prop)
-        //{
-        //    _room_properties.InsertOne(room_prop);
-        //}
-
-        //public void CreateLocationProperty(location_property location_prop)
-        //{
-        //    _location_properties.InsertOne(location_prop);
-        //}
-
-
-        // ASSOCIATION OF COLLECTION OBJECTS
-
-        //public void AddRoomPropertyToRoom(room aRoom, room_property aRoomProp)
-        //{
-        //    room newRoom = GetRoom(aRoom.room_id);
-
-        //    room_property newProp = GetRoomProp(aRoomProp.room_property_name);
-
-        //    newRoom.room_properties.Add(newProp.roomproperty_id);
-        //    newProp.room_ids.Add(newRoom.room_id);
-
-        //    _room.ReplaceOne(x => x.room_id == newRoom.room_id, newRoom);
-        //    _room_properties.ReplaceOne(x => x.roomproperty_id == newProp.roomproperty_id, newProp);
-        //}
-
-        //public void AddLocationPropertyToLocation(location aLocation, location_property aLocationProp)
-        //{
-        //    location newLocation = GetLocation(aLocation.location_name);
-
-        //    location_property newProp = GetLocationProp(aLocationProp.location_property_name);
-
-        //    newLocation.location_properties.Add(newProp.location_property_id.ToString());
-        //    newProp.location_ids.Add(newLocation.location_id.ToString());
-
-        //    _location.ReplaceOne(x => x.location_id == newLocation.location_id, newLocation);
-        //    _location_properties.ReplaceOne(x => x.location_property_id == newProp.location_property_id, newProp);
-        //}
 
 
         // GETTERS
@@ -143,18 +111,24 @@ namespace MongoContext.Services
 
         }
 
-        public room_property GetRoomProp(string name)
+        public List<room> GetAllRooms()
         {
-            return _room_properties.Find<room_property>(x => x.room_property_name == name).FirstOrDefault();
-        }
 
-        public location_property GetLocationProp(string name)
-        {
-            return _location_properties.Find<location_property>(x => x.location_property_name == name).FirstOrDefault();
+            return _room.Find(x => true).ToList();
         }
 
 
+        // *SPECIAL* GETTERS
 
+        public room GetRandomRoom()
+        {
+            var rooms = GetAllRooms();
+
+            Random rnd = new Random();
+
+            return rooms[rnd.Next(0, rooms.Count)];
+
+        }
 
     }
 }
