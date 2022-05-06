@@ -7,8 +7,8 @@ namespace DAB_ASS3.Models
     public class location
     {
 		[BsonId]
-		[BsonRepresentation(BsonType.ObjectId)]
-		public string location_id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string location_id { get; set; }
         public string location_address { get; set; }
         public int location_zipcode { get; set; }
         public string location_name { get; set; }

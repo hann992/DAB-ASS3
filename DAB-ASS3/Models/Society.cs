@@ -6,6 +6,9 @@ namespace DAB_ASS3.Models
 {
     public class society
     {
+
+        //[BsonRepresentation(BsonType.ObjectId)]
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string society_id { get; set; }

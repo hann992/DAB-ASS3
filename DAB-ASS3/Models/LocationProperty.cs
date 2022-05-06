@@ -8,9 +8,10 @@ namespace DAB_ASS3.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int location_properties_id { get; set; }
+        public string location_property_id { get; set; }
         public string location_property_name { get; set; }
 
+        
         public List<string> location_ids { get; set; }
 
 
