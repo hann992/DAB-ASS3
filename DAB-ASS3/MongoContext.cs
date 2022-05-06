@@ -15,6 +15,7 @@ namespace MongoContext.Services
 
 
 
+
         private readonly string connectionString = "mongodb://localhost:27017";
         private readonly string DBname = "DAB-ASS3-Municipality";
 
@@ -134,6 +135,12 @@ namespace MongoContext.Services
         public List<booking> GetAllBookings()
         {
             return _booking.Find(x => true).ToList();
+        }
+
+        public List<society> GetAllSocieties()
+        {
+            return _society.Find(x => true).ToList();
+
         }
 
         public room_property GetRoomProp(string name)

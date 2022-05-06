@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoContext.Services;
 using Newtonsoft.Json;
+using DAB_ASS3.Models;
 
 namespace DAB_ASS3.Controllers
 {
@@ -36,7 +38,23 @@ namespace DAB_ASS3.Controllers
             //             }).ToList();
 
             // Vi laver listen om til json, og returnere som string
-            return JsonConvert.SerializeObject("");
+
+            MongoService db = new MongoService();
+
+            var societies = db.GetAllSocieties();
+
+            societies.Sort(delegate (society x, society y)
+            {
+                if (x.society_activity == null && y.society_activity == null) return 0;
+                else if (x.society_activity == null) return -1;
+                else if (y.society_activity == null) return 1;
+                else return x.society_activity.CompareTo(y.society_activity);
+            });
+
+
+
+
+            return JsonConvert.SerializeObject(societies);
         }
     }
 }
