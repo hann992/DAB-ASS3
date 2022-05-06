@@ -286,10 +286,10 @@ namespace DAB_ASS3  // SKAL OPDATERES
                         location_ID = location.location_id
                     });
                 }
-
+                Console.WriteLine("location: " + location.location_name + ": " + location.location_id.ToString());
                 foreach(var room in db.GetRoomsFromLocation(location.location_id).ToList())
                 {
-
+                    Console.WriteLine("Room: " + room.room_name + ": " + room.location_ID.ToString());
                     db.AddRoomPropertyToRoom(db.GetRoom(room.room_id), db.GetRoomProp(rumprop));
                 }
             }

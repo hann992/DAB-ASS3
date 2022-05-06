@@ -78,7 +78,7 @@ namespace MongoContext.Services
 
         public void AddRoomPropertyToRoom(room aRoom, room_property aRoomProp)
         {
-            room newRoom = GetRoom(aRoom.room_name);
+            room newRoom = GetRoom(aRoom.room_id);
 
             room_property newProp = GetRoomProp(aRoomProp.room_property_name);
 
@@ -95,8 +95,8 @@ namespace MongoContext.Services
 
             location_property newProp = GetLocationProp(aLocationProp.location_property_name);
 
-            newLocation.location_properties.Add(newProp.location_property_id);
-            newProp.location_ids.Add(newLocation.location_id);
+            newLocation.location_properties.Add(newProp.location_property_id.ToString());
+            newProp.location_ids.Add(newLocation.location_id.ToString());
 
             _location.ReplaceOne(x => x.location_id == newLocation.location_id, newLocation);
             _location_properties.ReplaceOne(x => x.location_property_id == newProp.location_property_id, newProp);
