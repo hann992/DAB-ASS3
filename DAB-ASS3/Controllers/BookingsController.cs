@@ -1,9 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MongoContext.Services;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using Newtonsoft.Json;
 
 namespace DAB_ASS3.Controllers
 {
+
+    public class returnJson
+    {
+        public string RoomName { get; set; }
+        public string LocationName { get; set; }
+        public string SocietyName { get; set; }
+        public string ChairmanName { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+    }
+
+
+
+
+
+
     [ApiController]
     [Route("Bookings/")]
     public class BookingsController : ControllerBase
@@ -48,8 +67,35 @@ namespace DAB_ASS3.Controllers
             //                EndTime = b.booking_to
             //            }).ToList();
 
+            MongoService db = new MongoService();
+
+
+            var query = db.Booking.Aggregate()
+                        .Lookup("room", "room_id", "_id", "AsRoom")
+                        .Lookup("location", "AsRoom.location_ID", "_id", "AsLocation")
+                        .Lookup("society", "society_id", "_id", "AsSociety")
+                        .As<BsonDocument>()
+                        .ToList();
+
+            //List<returnJson> returnJson = new List<returnJson>();
+
+            //foreach(var item in query)
+            //{
+            //    returnJson.Add(
+            //        new returnJson
+            //        {
+            //            RoomName = item["AsRoom.room_name"].AsString,
+            //            LocationName = item["AsLocation.location_name"].AsString,
+            //            SocietyName = item["AsSociety.society_name"].AsString,
+            //            ChairmanName = item["AsSociety.chairman.chairman_name"].AsString,
+            //            StartTime = item["booking_from"].AsDateTime,
+            //            EndTime = item["booking_´to"].AsDateTime,
+            //        });
+            //}
+
+
             // Vi laver listen om til json, og returnere som string
-            return JsonConvert.SerializeObject("");
+            return JsonConvert.SerializeObject(query);
             
         }
     }

@@ -20,6 +20,14 @@ namespace MongoContext.Services
         private readonly string DBname = "DAB-ASS3-Municipality";
 
 
+        public IMongoCollection<booking> Booking { get { return _booking; } }
+
+        public IMongoCollection<location> Location { get { return _location; } }
+
+        public IMongoCollection<room> Room { get { return _room;} }
+
+        public IMongoCollection<society> Society { get { return _society; } }
+
         public MongoService()
         {
             var client = new MongoClient(connectionString);
@@ -32,6 +40,8 @@ namespace MongoContext.Services
             _location =             database.GetCollection<location>("location");
 
             _room =                 database.GetCollection<room>("room");
+
+            
 
         }
 
