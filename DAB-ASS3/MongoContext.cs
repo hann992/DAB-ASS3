@@ -10,7 +10,7 @@ namespace MongoContext.Services
         private IMongoCollection<society>           _society;
         private IMongoCollection<location>          _location;
         private IMongoCollection<room>              _room;
-        private IMongoCollection<room_property>   _room_properties;
+        private IMongoCollection<room_property>     _room_properties;
         private IMongoCollection<location_property> _location_properties;
 
 
@@ -63,44 +63,44 @@ namespace MongoContext.Services
             _location.InsertOne(location);
         }
 
-        public void CreateRoomProperty(room_property room_prop)
-        {
-            _room_properties.InsertOne(room_prop);
-        }
+        //public void CreateRoomProperty(room_property room_prop)
+        //{
+        //    _room_properties.InsertOne(room_prop);
+        //}
 
-        public void CreateLocationProperty(location_property location_prop)
-        {
-            _location_properties.InsertOne(location_prop);
-        }
+        //public void CreateLocationProperty(location_property location_prop)
+        //{
+        //    _location_properties.InsertOne(location_prop);
+        //}
 
 
         // ASSOCIATION OF COLLECTION OBJECTS
 
-        public void AddRoomPropertyToRoom(room aRoom, room_property aRoomProp)
-        {
-            room newRoom = GetRoom(aRoom.room_id);
+        //public void AddRoomPropertyToRoom(room aRoom, room_property aRoomProp)
+        //{
+        //    room newRoom = GetRoom(aRoom.room_id);
 
-            room_property newProp = GetRoomProp(aRoomProp.room_property_name);
+        //    room_property newProp = GetRoomProp(aRoomProp.room_property_name);
 
-            newRoom.room_properties.Add(newProp.roomproperty_id);
-            newProp.room_ids.Add(newRoom.room_id);
+        //    newRoom.room_properties.Add(newProp.roomproperty_id);
+        //    newProp.room_ids.Add(newRoom.room_id);
 
-            _room.ReplaceOne(x => x.room_id == newRoom.room_id, newRoom);
-            _room_properties.ReplaceOne(x => x.roomproperty_id == newProp.roomproperty_id, newProp);
-        }
+        //    _room.ReplaceOne(x => x.room_id == newRoom.room_id, newRoom);
+        //    _room_properties.ReplaceOne(x => x.roomproperty_id == newProp.roomproperty_id, newProp);
+        //}
 
-        public void AddLocationPropertyToLocation(location aLocation, location_property aLocationProp)
-        {
-            location newLocation = GetLocation(aLocation.location_name);
+        //public void AddLocationPropertyToLocation(location aLocation, location_property aLocationProp)
+        //{
+        //    location newLocation = GetLocation(aLocation.location_name);
 
-            location_property newProp = GetLocationProp(aLocationProp.location_property_name);
+        //    location_property newProp = GetLocationProp(aLocationProp.location_property_name);
 
-            newLocation.location_properties.Add(newProp.location_property_id.ToString());
-            newProp.location_ids.Add(newLocation.location_id.ToString());
+        //    newLocation.location_properties.Add(newProp.location_property_id.ToString());
+        //    newProp.location_ids.Add(newLocation.location_id.ToString());
 
-            _location.ReplaceOne(x => x.location_id == newLocation.location_id, newLocation);
-            _location_properties.ReplaceOne(x => x.location_property_id == newProp.location_property_id, newProp);
-        }
+        //    _location.ReplaceOne(x => x.location_id == newLocation.location_id, newLocation);
+        //    _location_properties.ReplaceOne(x => x.location_property_id == newProp.location_property_id, newProp);
+        //}
 
 
         // GETTERS
