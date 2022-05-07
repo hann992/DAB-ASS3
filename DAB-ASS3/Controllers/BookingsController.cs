@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAB_ASS3.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MongoContext.Services;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 
@@ -70,6 +72,7 @@ namespace DAB_ASS3.Controllers
             MongoService db = new MongoService();
 
 
+
             var query = db.Booking.Aggregate()
                         .Lookup("room", "room_id", "_id", "AsRoom")
                         .Lookup("location", "AsRoom.location_ID", "_id", "AsLocation")
@@ -77,25 +80,32 @@ namespace DAB_ASS3.Controllers
                         .As<BsonDocument>()
                         .ToList();
 
-            //List<returnJson> returnJson = new List<returnJson>();
 
-            //foreach(var item in query)
-            //{
-            //    returnJson.Add(
-            //        new returnJson
-            //        {
-            //            RoomName = item["AsRoom.room_name"].AsString,
-            //            LocationName = item["AsLocation.location_name"].AsString,
-            //            SocietyName = item["AsSociety.society_name"].AsString,
-            //            ChairmanName = item["AsSociety.chairman.chairman_name"].AsString,
-            //            StartTime = item["booking_from"].AsDateTime,
-            //            EndTime = item["booking_´to"].AsDateTime,
-            //        });
-            //}
+            var test = query.ConvertAll(BsonTypeMapper.MapToDotNetValue);
+
+            string jsonNu = JsonConvert.SerializeObject(test);
+
+
+            List<returnJson> returnJson = new List<returnJson>();
+
+            foreach (var item in JsonConvert.DeserializeObject<dynamic>(jsonNu))
+            {
+                returnJson.Add(
+                    new returnJson
+                    {
+                        StartTime = (DateTime)item.booking_from,
+                        EndTime = (DateTime)item.booking_to,
+                        RoomName = (string)item.AsRoom[0].room_name,
+                        LocationName = (string)item.AsLocation[0].location_name,
+                        SocietyName = (string)item.AsSociety[0].society_name,
+                        ChairmanName = (string)item.AsSociety[0].chairman.chairman_name,
+
+                    });
+            }
 
 
             // Vi laver listen om til json, og returnere som string
-            return JsonConvert.SerializeObject(query);
+            return JsonConvert.SerializeObject(returnJson);
             
         }
     }
