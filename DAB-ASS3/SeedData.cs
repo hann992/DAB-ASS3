@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using MongoContext.Services;
+using MongoDB.Driver;
 
 namespace DAB_ASS3  // SKAL OPDATERES
 {
@@ -295,16 +296,31 @@ public class SeedData
                 int noOfBookings = rnd.Next(1, 3);
                 for(int i = 0; i < noOfBookings; i++)
                 {
+                    room selectedRoom = db.GetRandomRoom();
+
+                    location selectedLocation = db.Location.Find(s => s.location_id == selectedRoom.location_ID).First();
+
+
                     db.CreateBooking(
                         new booking()
                         {
-                            booking_from = DateTime.Today.AddDays(-1),
-                            booking_to = DateTime.Today.AddDays(1),
-                            society_id = society.society_id,
-                            room_id = db.GetRandomRoom().room_id,
-                        });
+                            booking_from = DateTime.Today.AddDays(1),
+                            booking_to = DateTime.Today.AddDays(2),
+                            room_name = selectedRoom.room_name,
+                            society_name = society.society_name,
+                            chairman_name = society.chairman.chairman_name,
+                            location_name = selectedLocation.location_name,
+                            location_code = selectedLocation.location_access[0].location_access_code,
+                            location_key_pickup_address = selectedLocation.location_access[0].location_key_pickup_address,
+                            key_responsible_CPR = society.keyresponsible.key_responsible_CPR,
+
+                        }) ;
+
+                    Console.WriteLine("Searchable CPR: " + society.keyresponsible.key_responsible_CPR);
                 }
             }
+
+
 
 
         Console.WriteLine("Done!");

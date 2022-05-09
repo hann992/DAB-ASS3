@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Municipality Room/Location Management",
-        Description = "Fetch Societies, Bookings, Rooms/Locations and Booking Access.",
+        Description = "Fetch Societies, Bookings, Rooms/Locations and Booking Access.\n\n <b>OBS! Til Booking Access, så kør program og se øverst i konsol, der står alle CPR numre som kan søges på!</b>",
         Version = "v1"
     });
 
